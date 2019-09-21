@@ -1,47 +1,5 @@
-import json, enum, configparser
+import json, configparser
 import requests
-
-
-class Position(enum.IntEnum):
-	LEFT = 0
-	MID = 1
-	RIGHT = 2
-
-
-class Driver():
-
-	def __init__(self):
-		self._avatar = '🏎️'
-		self._position = Position.MID
-
-
-class Road():
-
-	_HAZARD = '🛢️'
-
-	def __init__(self):
-		self._player = Driver()
-
-
-	def _row(self, items):
-		row_str = '|{}\t{}\t{}|'.format(*items)
-		return row_str
-
-
-	def __str__(self):
-		items = ['', '', '']
-		items[self._player._position] = self._player._avatar
-		items[0] = self._HAZARD
-		return self._row(items)
-
-
-
-
-
-
-
-
-
 
 
 
@@ -62,7 +20,7 @@ class SlackBot():
 		pass
 
 
-	def send_msg(self, channel_id, msg, blocks = None):
+	def send_msg(self, channel_id, msg, *blocks):
 
 		endpoint = 'chat.postMessage'
 
@@ -83,7 +41,7 @@ class SlackBot():
 		payload = {
 			"text" : msg,
 			"channel" : channel_id,
-			"ts" : timestamp
+			"ts" : timestamp,
 		}
 
 		self._post_api(endpoint, payload)
@@ -111,7 +69,31 @@ class SlackBot():
 		return headers
 
 
-	
+	def create_actions(self, *elements):
+
+		block = {
+			"type": "actions",
+			"elements": elements
+		}
+
+		return block
+
+
+	def create_button(self, text, value):
+
+		block = {
+			"type": "button",
+			"text": {
+				"type": "plain_text",
+				"text": text,
+				"emoji": True
+			},
+			"value": value
+		}	
+
+		return block
+
+
 
 
 
@@ -122,8 +104,13 @@ def main():
 	
 	token = config['slack']['token']
 
-	bot = SlackBot(token)
-	bot.send_msg('DN4GLP64B', 'Morning')
+	speedster = SlackBot(token)
+
+	left_button = speedster.create_button('⬅️', 'left')
+	right_button = speedster.create_button('➡️', 'right')
+	actions = speedster.create_actions(left_button, right_button)
+
+	speedster.send_msg('DN4GLP64B', 'Morning', actions)
 
 
 if __name__ == '__main__':
