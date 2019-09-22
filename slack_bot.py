@@ -31,7 +31,8 @@ class SlackBot():
 		}
 
 
-		self._post_api(endpoint, payload)
+		return self._post_api(endpoint, payload)
+
 
 
 	def update_msg(self, channel_id, timestamp, msg, blocks = None):
@@ -42,9 +43,11 @@ class SlackBot():
 			"text" : msg,
 			"channel" : channel_id,
 			"ts" : timestamp,
+			"blocks" : blocks
 		}
 
-		self._post_api(endpoint, payload)
+		return self._post_api(endpoint, payload)
+
 
 
 
@@ -54,6 +57,11 @@ class SlackBot():
 		headers = self._headers()
 		url = self._URL + endpoint
 		response = requests.post(url = url, data = json.dumps(payload), headers = headers)
+
+		if response.status_code != 200:
+			raise Exception('Slack BIG mad yo')
+
+		return response.json()
 
 
 
@@ -95,22 +103,25 @@ class SlackBot():
 
 
 
+def create_config_bot():
+	config = configparser.ConfigParser()
+	config.read('bot_config.cfg')
+
+	token = config['slack']['token']
+	bot = SlackBot(token)
+	return bot
 
 
 def main():
 
-	config = configparser.ConfigParser()
-	config.read('bot_config.cfg')
-	
-	token = config['slack']['token']
-
-	speedster = SlackBot(token)
+	speedster = create_config_bot()
 
 	left_button = speedster.create_button('⬅️', 'left')
 	right_button = speedster.create_button('➡️', 'right')
 	actions = speedster.create_actions(left_button, right_button)
 
-	speedster.send_msg('DN4GLP64B', 'Morning', actions)
+	response = speedster.send_msg('DN4GLP64B', 'Morning', actions)
+	print(response)
 
 
 if __name__ == '__main__':
