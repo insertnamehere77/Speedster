@@ -67,15 +67,17 @@ class Game():
 			self.running = False
 			return
 
+		# Update our current hazards
+		for hazard in list(self._hazards):
+			self._update_hazard(hazard)
+
+		
 		# If player crashed, update icon
 		if self._player in self._hazards:
 			self.crashed = True
 			self._player.icon = self._CRASH_ICON
 			return
 
-		# Update our current hazards
-		for hazard in list(self._hazards):
-			self._update_hazard(hazard)
 
 		# Spawn more hazards if needed
 		if len(self._hazards) < self._MAX_HAZARDS:
