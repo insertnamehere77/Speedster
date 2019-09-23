@@ -71,9 +71,9 @@ class Game():
 
 	def _render_game(self):
 		board = [
-			[' ', ' ', ' '],
-			[' ', ' ', ' '],
-			[' ', ' ', ' ']
+			['', '', ''],
+			['', '', ''],
+			['', '', '']
 		]
 
 		self._add_board_obj(board, self._hazard)
