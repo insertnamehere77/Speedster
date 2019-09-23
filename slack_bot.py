@@ -1,4 +1,4 @@
-import json, configparser
+import json, configparser, os
 import requests
 
 
@@ -187,11 +187,19 @@ class SlackBot():
 
 # Uses config parser to grab the bot's tokens and create it
 def create_config_bot():
-	config = configparser.ConfigParser()
-	config.read('bot_config.cfg')
 
-	bot_token = config['slack']['bot_token']
-	user_token = config['slack']['user_token']
+	# First check env variables, used in heroku deployments
+	if 'slack_bot_token' in os.environ:
+		bot_token = os.environ['slack_bot_token']
+		user_token = os.environ['slack_user_token']
+
+	# Else check config file
+	else:
+		config = configparser.ConfigParser()
+		config.read('bot_config.cfg')
+
+		bot_token = config['slack']['bot_token']
+		user_token = config['slack']['user_token']
 
 	bot = SlackBot(bot_token, user_token)
 	return bot

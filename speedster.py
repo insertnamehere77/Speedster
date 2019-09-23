@@ -210,6 +210,7 @@ class LeaderBoard():
 
 	# Config vars
 	_MAX_NUM_SCORES = 3
+	_DEFAULT_NAMES = ['Malibu', 'Lacrosse', 'Denali']
 
 	# Represents a single score on the board
 	Score = collections.namedtuple('Score', 'name points')
@@ -246,10 +247,9 @@ class LeaderBoard():
 	# Sets the initial dummy scores
 	def _init_scores(self):
 		self._scores = []
-		vehicles = ['Malibu', 'Lacrosse', 'Denali']
 		curr_score = 10
 
-		for name in vehicles:
+		for name in self._DEFAULT_NAMES:
 			score = LeaderBoard.Score(name, curr_score)
 			self._scores.append(score)
 			curr_score += 5

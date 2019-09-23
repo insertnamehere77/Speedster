@@ -85,7 +85,7 @@ def move_player(channel_id, move):
 
 # Endpoint to move the player
 @app.route('/move', methods=['POST'])
-def test_move():
+def move_player_endpoint():
 	form = flask.request.form.to_dict()
 	payload = json.loads(form['payload'])
 
@@ -101,13 +101,18 @@ def test_move():
 
 # Endpoint to start the game
 @app.route('/start', methods=['POST'])
-def test_endpoint():
+def start_game_endpoint():
 	form = flask.request.form.to_dict()
 	channel_id = form['channel_id']
 	
 	start_game(channel_id)
 
 	return '', 200
+
+
+@app.route('/', methods = ['GET'])
+def root_endpoint():
+	return 'I\'m up', 200
 
 
 
