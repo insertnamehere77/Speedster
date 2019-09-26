@@ -110,9 +110,9 @@ def start_game_endpoint():
 	return '', 200
 
 
-@app.route('/', methods = ['GET'])
+@app.route('/', methods = ['GET', 'POST'])
 def root_endpoint():
-	return 'I\'m up', 200
+	return 'Ready to race!', 200
 
 
 
