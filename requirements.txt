@@ -13,7 +13,7 @@ Jinja2==2.11.3
 MarkupSafe==1.1.1
 requests==2.22.0
 urllib3==1.26.5
-Werkzeug==0.15.6
+Werkzeug==2.2.3
 certifi==2019.9.11
 chardet==3.0.4
 Click==7.0
@@ -25,4 +25,4 @@ Jinja2==2.11.3
 MarkupSafe==1.1.1
 requests==2.22.0
 urllib3==1.26.5
-Werkzeug==0.15.6
+Werkzeug==2.2.3
